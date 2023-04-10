@@ -100,10 +100,10 @@ def dashboard():
     b.place(x=400, y=97)
 
     for data in row1:
-        user = Label(des, text=f"Name : {data[1]}", font='Verdana 10 bold')
+        user = Label(des, text=f"ID : {data[1]}", font='Verdana 10 bold')
         user.place(x=20, y=100)
 
-        userid = Label(des, text=f"ID : {data[0]}", font='Verdana 10 bold')
+        userid = Label(des, text=f"Name : {data[4]}", font='Verdana 10 bold')
         userid.place(x=20, y=130)
 
     # Book Docter Appointment App
@@ -135,7 +135,7 @@ def dashboard():
 
         Room_box = ttk.Combobox(
             des, width=30, textvariable=room_var, state='readonly')
-        Room_box['values'] = list(range(100, 600))
+        Room_box['values'] = list(range(1, 200))
         Room_box.current(0)
         Room_box.place(x=500, y=145)
 
