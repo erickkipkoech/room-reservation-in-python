@@ -51,10 +51,20 @@ def login():
 def dashboard():
     def approval_btn(valuee):
         con = pymysql.connect(host="localhost", user="root",
-                          password="new_password", database="room_reservation")
+                              password="new_password", database="room_reservation")
         cur = con.cursor()
 
-        cur.execute("select * from reservation_requests")
+        cur.execute("update reservation_requests SET approval_status=1 where user_student_id=%s ",(valuee))
+
+        for data in cur:
+            print(data)
+
+    def reject_btn(valuee):
+        con = pymysql.connect(host="localhost", user="root",
+                              password="new_password", database="room_reservation")
+        cur = con.cursor()
+
+        cur.execute("update reservation_requests SET approval_status=2 where user_student_id=%s ",(valuee))
 
         for data in cur:
             print(data)
@@ -130,7 +140,7 @@ def dashboard():
                              command=approval_btn(data[5]), bg="green")
         btn_approve.place(x=250, y=y)
         btn_reject = Button(my_w, width=10, text="Reject",
-                            font='Verdana 7 bold', command=login, bg="red")
+                            font='Verdana 7 bold', command=reject_btn(data[5]), bg="red")
         btn_reject.place(x=333, y=y)
         approval = data[11]
         if (approval == 0):
@@ -153,7 +163,7 @@ def dashboard():
 
     my_w.mainloop()
 
-  
+
 # -----------------------------------------------------End Dashboard Panel -------------------------------------
 # ------------------------------------------------------------ Login Window -----------------------------------------
 win = Tk()
