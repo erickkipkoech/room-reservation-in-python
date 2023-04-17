@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import pymysql
 
-
 # ---------------------------------------------------------------Login Function --------------------------------------
 def clear():
     userentry.delete(0, END)
@@ -54,20 +53,20 @@ def dashboard():
                               password="new_password", database="room_reservation")
         cur = con.cursor()
 
-        cur.execute("update reservation_requests SET approval_status=1 where user_student_id=%s ",(valuee))
+        cur.execute("select * from reservation_requests")
 
         for data in cur:
-            print(data)
+            print(valuee)
 
     def reject_btn(valuee):
         con = pymysql.connect(host="localhost", user="root",
                               password="new_password", database="room_reservation")
         cur = con.cursor()
 
-        cur.execute("update reservation_requests SET approval_status=2 where user_student_id=%s ",(valuee))
+        cur.execute("select * from reservation_requests")
 
-        for data in cur:
-            print(data)
+        # for data in cur:
+        # print(data)
     my_w = tk.Tk()
     my_w.title("Room reservations approval panel")
     my_w.minsize(width=800,  height=500)
@@ -123,6 +122,8 @@ def dashboard():
     i = 1
     x = 0
     y = 120
+    c=cur.fetchall()
+    print(c[0])
     for data in cur:
         e = Label(my_w, width=10, text=data[5],
                   borderwidth=2, relief='ridge', anchor="center")
@@ -136,12 +137,15 @@ def dashboard():
                    borderwidth=2, relief='ridge', anchor="center")
         e2.grid(row=i)
         e2.place(y=y, x=166)
-        btn_approve = Button(my_w, width=10, text=(data[5], "Approve"), font='Verdana 7 bold',
-                             command=approval_btn(data[5]), bg="green")
+        my_list = data[5]
+        btn_approve = Button(my_w, width=10, text=("Approve"), font='Verdana 7 bold',
+                             command=approval_btn(my_list), bg="green")
         btn_approve.place(x=250, y=y)
+        i = i+1
         btn_reject = Button(my_w, width=10, text="Reject",
-                            font='Verdana 7 bold', command=reject_btn(data[5]), bg="red")
+                            font='Verdana 7 bold', command=reject_btn(my_list), bg="red")
         btn_reject.place(x=333, y=y)
+        i = i+1
         approval = data[11]
         if (approval == 0):
             e2 = Label(my_w, width=20, text="Not Approved",
@@ -160,6 +164,7 @@ def dashboard():
             e2.place(y=y, x=420)
         i = i+1
         y += 30
+        print(my_list)
 
     my_w.mainloop()
 
